@@ -63,6 +63,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.bukkit.inventory.meta.BookMeta;
 
 import pgDev.bukkit.DisguiseCraft.disguise.DisguiseType;
 
@@ -348,7 +349,7 @@ public class BGListener implements Listener {
 						if((arrow.getLocation().distance(BGCornucopia.getMainBlock().getLocation()) <= 16) || 
 							(arrow.getLocation().distance(BGFeast.getMainBlock().getLocation()) <= 16 ) ||
 							(arrow.getLocation().distance(BGFBattle.getMainBlock().getLocation()) <= 16 )) {
-							BGChat.printPlayerChat(player, "§cYou can't destroy this block!");
+							BGChat.printPlayerChat(player, "ï¿½cYou can't destroy this block!");
 							arrow.remove();
 							return;
 						} else {
@@ -578,7 +579,7 @@ public class BGListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		if (!plugin.DENY_LOGIN & plugin.ADV_CHAT_SYSTEM) {
-			BGChat.printDeathChat("§e" + event.getJoinMessage());
+			BGChat.printDeathChat("ï¿½e" + event.getJoinMessage());
 		}
 
 		if (plugin.DENY_LOGIN || plugin.ADV_CHAT_SYSTEM) {
@@ -637,8 +638,8 @@ public class BGListener implements Listener {
 		List<String> page = new ArrayList<String>();
 		for(String line : pages)  {
 			line = line.replace("<server_title>", plugin.SERVER_TITLE);
-			line = line.replace("<space>", "§r\n");
-			line = line.replace("&", "§");
+			line = line.replace("<space>", "ï¿½r\n");
+			line = line.replace("&", "ï¿½");
 			if(!line.contains("<newpage>")) {
 				page.add(line + "\n");
 			} else {
@@ -655,11 +656,12 @@ public class BGListener implements Listener {
 		content.add(pagestr);	
 		page.clear();
 		
-		CraftBook bi = new CraftBook(new ItemStack(387,1));
+		BookMeta bi;
 		bi.setPages(content.toArray(new String[0]));
 		bi.setAuthor(BGFiles.bookconf.getString("author"));
 		bi.setTitle(BGFiles.bookconf.getString("title"));
-		ItemStack writtenbook = bi.getItemStack();
+		ItemStack writtenbook = new ItemStack(387,1);
+		writtenbook.setItemMeta(bm);
 		p.getInventory().addItem(writtenbook);
 		}
 		
@@ -687,7 +689,7 @@ public class BGListener implements Listener {
 			
 				if (update) {
 					String newversion = updater.getLatestVersionString();
-					BGChat.printPlayerChat(p, "§bUpdate available: " + newversion + " §r/bgdownload");
+					BGChat.printPlayerChat(p, "ï¿½bUpdate available: " + newversion + " ï¿½r/bgdownload");
 				}
 			}
 		}
@@ -728,7 +730,7 @@ public class BGListener implements Listener {
 		}
 
 		if((plugin.CORNUCOPIA_PROTECTED && BGCornucopia.isCornucopiaBlock(event.getBlock())) || (plugin.FEAST_PROTECTED && BGFeast.isFeastBlock(event.getBlock())) || BGFBattle.isBattleBlock(event.getBlock())) {
-			BGChat.printPlayerChat(p, "§cYou can't destroy this block!");
+			BGChat.printPlayerChat(p, "ï¿½cYou can't destroy this block!");
 			event.setCancelled(true);
 			return;
 		}
@@ -778,7 +780,7 @@ public class BGListener implements Listener {
 		}
 		
 		if((plugin.CORNUCOPIA_PROTECTED && BGCornucopia.isCornucopiaBlock(event.getBlock())) || (plugin.FEAST_PROTECTED && BGFeast.isFeastBlock(event.getBlock())) || BGFBattle.isBattleBlock(event.getBlock())) {
-			BGChat.printPlayerChat(p, "§cYou can't place this block!");
+			BGChat.printPlayerChat(p, "ï¿½cYou can't place this block!");
 			event.setCancelled(true);
 			return;
 		}
@@ -818,14 +820,14 @@ public class BGListener implements Listener {
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
 		if(plugin.isSpectator(event.getPlayer())) {
 			if(plugin.ADV_CHAT_SYSTEM) {
-				BGChat.printPlayerChat(event.getPlayer(), "§cSpectators can't chat.");
+				BGChat.printPlayerChat(event.getPlayer(), "ï¿½cSpectators can't chat.");
 				event.setCancelled(true);			
 				return;
 			} else {
 				event.getRecipients().clear();
 				event.getRecipients().addAll(plugin.getSpectators());
 				event.getRecipients().addAll(getOnlineOps());
-				event.setFormat("§o[SPECTATORS] §r" + event.getFormat());
+				event.setFormat("ï¿½o[SPECTATORS] ï¿½r" + event.getFormat());
 			}
 		}
 			
@@ -836,7 +838,7 @@ public class BGListener implements Listener {
 				BGChat.playerChatMsg(m);
 				log.info("[CHAT] " + m);
 			} else {
-				BGChat.printPlayerChat(event.getPlayer(), "§cYour message is too long!");
+				BGChat.printPlayerChat(event.getPlayer(), "ï¿½cYour message is too long!");
 			}
 			event.setCancelled(true);
 		}
@@ -869,7 +871,7 @@ public class BGListener implements Listener {
 		}
 		
 		if (!plugin.DENY_LOGIN.booleanValue() & plugin.ADV_CHAT_SYSTEM) {
-			BGChat.printDeathChat("§e" + event.getQuitMessage());
+			BGChat.printDeathChat("ï¿½e" + event.getQuitMessage());
 		}
 
 		if (this.plugin.DENY_LOGIN.booleanValue() || plugin.ADV_CHAT_SYSTEM) {
